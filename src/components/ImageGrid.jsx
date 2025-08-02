@@ -1,4 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
 import img1 from '../assets/img1.jpg';
 import img2 from '../assets/img2.jpg';
 import img3 from '../assets/img3.jpg';
@@ -16,7 +19,8 @@ import img14 from '../assets/img14.jpg';
 import img15 from '../assets/img15.jpg';
 import img16 from '../assets/img16.jpg';
 
-// Base image data (without position)
+gsap.registerPlugin(ScrollTrigger);
+
 const baseImageData = [
   { id: 1, src: img1, alt: 'Image 1' },
   { id: 2, src: img2, alt: 'Image 2' },
@@ -36,7 +40,6 @@ const baseImageData = [
   { id: 16, src: img16, alt: 'Image 16' },
 ];
 
-// Helper to check if a cell or its 8 neighbors are occupied
 const isOccupiedOrNeighbor = (row, col, occupied) => {
   for (let dr = -1; dr <= 1; dr++) {
     for (let dc = -1; dc <= 1; dc++) {
@@ -48,7 +51,6 @@ const isOccupiedOrNeighbor = (row, col, occupied) => {
   return false;
 };
 
-// Generate positions with no adjacent neighbors
 const generateNonAdjacentPositions = (count, maxRow = 20, maxCol = 8) => {
   const used = new Set();
   const positions = [];
@@ -78,12 +80,36 @@ const ImageGrid = () => {
     c: positions[i]?.col ?? 1,
   }));
 
+  useEffect(() => {
+    document.querySelectorAll(".elem").forEach((elem) => {
+      const image = elem.querySelector("img");
+      const tl = gsap.timeline();
+
+      const xTransform = gsap.utils.random(-100, 100);
+
+      tl.set(image, {
+        transformOrigin: `${xTransform < 0 ? 0 : 100}% 50%`,
+      });
+
+      tl.to(image, {
+        scale: 0,
+        ease: "none",
+        scrollTrigger: {
+          trigger: elem,
+          start: "top top",
+          end: "bottom top",
+          scrub: true,
+        },
+      });
+    });
+  }, []);
+
   return (
     <div className="grid grid-cols-8 grid-rows-20 gap-2 min-h-screen p-4">
       {imagesWithPositions.map((image) => (
         <div
           key={image.id}
-          className="col-span-2 row-span-4 aspect-square"
+          className="elem col-span-2 row-span-4 aspect-square"
           style={{
             gridColumnStart: image.c,
             gridRowStart: image.r,
