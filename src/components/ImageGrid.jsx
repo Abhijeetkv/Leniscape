@@ -83,7 +83,7 @@ const ImageGrid = () => {
       {imagesWithPositions.map((image) => (
         <div
           key={image.id}
-          className="col-span-1 row-span-1 aspect-square"
+          className="col-span-2 row-span-4 aspect-square"
           style={{
             gridColumnStart: image.c,
             gridRowStart: image.r,
