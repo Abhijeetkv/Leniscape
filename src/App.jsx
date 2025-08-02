@@ -1,11 +1,11 @@
 import { useEffect } from "react";
 import Lenis from "@studio-freight/lenis";
+import ImageGrid from './components/ImageGrid.jsx';
 
 function App() {
   useEffect(() => {
     const lenis = new Lenis();
 
-    // Animation frame loop
     const raf = (time) => {
       lenis.raf(time);
       requestAnimationFrame(raf);
@@ -13,7 +13,6 @@ function App() {
 
     requestAnimationFrame(raf);
 
-    // Cleanup on unmount
     return () => {
       lenis.destroy();
     };
@@ -21,18 +20,10 @@ function App() {
   
   return (
     <>
-    <div className="bg-zinc-900 min-h-screen flex justify-center items-center">
-      <p  className="text-white
-      ">Lenis Smooth Scroll with React</p>
-    </div>
-    <div className="bg-zinc-600 min-h-screen flex justify-center items-center">
-      <p  className="text-white
-      ">Lenis Smooth Scroll with React</p>
-    </div>
-    <div className="bg-zinc-400 min-h-screen flex justify-center items-center">
-      <p className="text-white
-      ">Lenis Smooth Scroll with React</p>
-    </div>
+      <section className="w-full min-h-screen flex flex-col justify-center p-8 md:p-16">
+      <h1 className="text-5xl md:text-7xl font-bold mb-8 text-center">Image Gallery</h1>
+      <ImageGrid />
+      </section>
     </>
   );
 }
