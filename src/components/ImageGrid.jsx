@@ -87,9 +87,9 @@ const ImageGrid = () => {
 
       const xTransform = gsap.utils.random(-100, 100);
 
-      tl.set(image, {
-        transformOrigin: `${xTransform < 0 ? 0 : 100}% 50%`,
-      });
+      // tl.set(image, {
+      //   transformOrigin: `${xTransform < 0 ? 0 : 100}% 50%`,
+      // });
 
       tl.to(image, {
         scale: 0,
@@ -100,12 +100,23 @@ const ImageGrid = () => {
           end: "bottom top",
           scrub: true,
         },
-      });
+      }, "start");
+
+      tl.to(image,{
+         xPercent: xTransform,
+         ease: "power4.inOut",
+      scrollTrigger: {
+        trigger: elem,
+        start: "top bottom",
+        end: "bottom top",
+        scrub: true,
+      }
+      })
     });
   }, []);
 
   return (
-    <div className="grid grid-cols-8 grid-rows-20 gap-2 min-h-screen p-4">
+    <div className="grid grid-cols-8 grid-rows-20 gap-2 min-h-screen overflow-hidden p-4">
       {imagesWithPositions.map((image) => (
         <div
           key={image.id}
@@ -118,7 +129,7 @@ const ImageGrid = () => {
           <img
             src={image.src}
             alt={image.alt}
-            className="w-full h-full object-cover rounded-lg"
+            className="w-full h-full object-cover rounded-xl"
           />
         </div>
       ))}
